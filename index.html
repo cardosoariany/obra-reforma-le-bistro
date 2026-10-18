@@ -33,10 +33,25 @@
       align-items: center;
       border-left: 8px solid var(--green-primary);
       box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      flex-wrap: wrap;
+      gap: 12px;
     }
 
     header h1 { font-size: 1.8rem; letter-spacing: 1px; color: var(--off-white); }
     header p { color: var(--green-light); font-size: 0.95rem; margin-top: 4px; }
+
+    .header-actions { display: flex; gap: 8px; }
+    .btn-action {
+      background: var(--green-light);
+      color: var(--black);
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .btn-action:hover { background: var(--pink-accent); }
 
     nav { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
     nav button {
@@ -53,7 +68,7 @@
     nav button.active { background: var(--green-primary); color: var(--off-white); border-color: var(--green-primary); }
 
     .tab-content { display: none; background: var(--card); padding: 24px; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
-    .tab-content.active { display: block; }
+    .tab-content.active { display: block !important; }
     .tab-content h2 { margin-bottom: 16px; color: var(--black); font-size: 1.4rem; border-bottom: 2px solid var(--green-light); padding-bottom: 8px; }
 
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
@@ -82,7 +97,7 @@
     tr:nth-child(even) { background-color: #FAFAFA; }
 
     .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 18px; margin-top: 15px; }
-    .gallery-item { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.04); }
+    .gallery-item { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.04); position: relative; }
     .gallery-item img { width: 100%; height: 150px; object-fit: cover; }
     .gallery-item p { padding: 10px; font-size: 0.88rem; text-align: center; font-weight: 500; }
     .gallery-item a { display: block; text-align: center; padding: 8px; background: var(--off-white); color: var(--green-primary); text-decoration: none; font-weight: bold; border-top: 1px solid var(--border); }
@@ -133,6 +148,17 @@
     .activity-card.pending {
       border-left-color: var(--pink-accent);
     }
+
+    .btn-delete {
+      background: #EF4444;
+      color: white;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.75rem;
+      margin-left: 8px;
+    }
   </style>
 </head>
 <body>
@@ -142,14 +168,19 @@
       <h1>LE BISTRÔ</h1>
       <p>Acompanhamento de Cronograma & Controle de Obra</p>
     </div>
+    <div class="header-actions">
+      <button class="btn-action" onclick="exportBackup()">📥 Exportar Dados</button>
+      <button class="btn-action" onclick="document.getElementById('import-file').click()">📤 Importar Dados</button>
+      <input type="file" id="import-file" accept=".json" style="display:none" onchange="importBackup(event)">
+    </div>
   </header>
 
   <nav>
-    <button class="nav-btn active" data-tab="dashboard">⏱️ Cronograma & Pendências</button>
-    <button class="nav-btn" data-tab="orcamentos">💰 Serviços & Orçamentos</button>
-    <button class="nav-btn" data-tab="projetos">📐 Projetos & Plantas</button>
-    <button class="nav-btn" data-tab="inspiracoes">💡 Inspirações</button>
-    <button class="nav-btn" data-tab="aprovados">✅ Aprovados</button>
+    <button class="nav-btn active" onclick="openTab('dashboard', this)">⏱️ Cronograma & Pendências</button>
+    <button class="nav-btn" onclick="openTab('orcamentos', this)">💰 Serviços & Orçamentos</button>
+    <button class="nav-btn" onclick="openTab('projetos', this)">📐 Projetos & Plantas</button>
+    <button class="nav-btn" onclick="openTab('inspiracoes', this)">💡 Inspirações</button>
+    <button class="nav-btn" onclick="openTab('aprovados', this)">✅ Aprovados</button>
   </nav>
 
   <!-- TAB: DASHBOARD -->
@@ -234,6 +265,7 @@
           <th>Valor</th>
           <th>Status</th>
           <th>Anexo</th>
+          <th>Ações</th>
         </tr>
       </thead>
       <tbody id="table-orcamentos"></tbody>
@@ -282,33 +314,48 @@
   </div>
 
   <script>
-    const state = {
-      orcamentos: JSON.parse(localStorage.getItem('lebistro_orcamentos')) || [],
-      projetos: JSON.parse(localStorage.getItem('lebistro_projetos')) || [],
-      inspiracoes: JSON.parse(localStorage.getItem('lebistro_inspiracoes')) || []
-    };
+    let state = { orcamentos: [], projetos: [], inspiracoes: [] };
+
+    // Leitura segura do localStorage
+    try {
+      state.orcamentos = JSON.parse(localStorage.getItem('lebistro_orcamentos')) || [];
+      state.projetos = JSON.parse(localStorage.getItem('lebistro_projetos')) || [];
+      state.inspiracoes = JSON.parse(localStorage.getItem('lebistro_inspiracoes')) || [];
+    } catch (e) {
+      console.warn("Aviso: localStorage indisponível ou em modo privado.");
+    }
 
     function saveState() {
-      localStorage.setItem('lebistro_orcamentos', JSON.stringify(state.orcamentos));
-      localStorage.setItem('lebistro_projetos', JSON.stringify(state.projetos));
-      localStorage.setItem('lebistro_inspiracoes', JSON.stringify(state.inspiracoes));
+      try {
+        localStorage.setItem('lebistro_orcamentos', JSON.stringify(state.orcamentos));
+        localStorage.setItem('lebistro_projetos', JSON.stringify(state.projetos));
+        localStorage.setItem('lebistro_inspiracoes', JSON.stringify(state.inspiracoes));
+      } catch (e) {
+        console.warn("Aviso: Não foi possível salvar no localStorage.");
+      }
       updateUI();
     }
 
-    // Gerenciador de navegação corrigido por Listeners
-    document.querySelectorAll('.nav-btn').forEach(button => {
-      button.addEventListener('click', (e) => {
-        const tabId = button.getAttribute('data-tab');
-        
-        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-        document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
-        
-        document.getElementById(tabId).classList.add('active');
-        button.classList.add('active');
-        
-        if (tabId === 'dashboard') renderCharts();
+    // Função global de navegação direta
+    function openTab(tabId, btn) {
+      const contents = document.querySelectorAll('.tab-content');
+      contents.forEach(content => {
+        content.classList.remove('active');
+        content.style.display = 'none';
       });
-    });
+
+      const buttons = document.querySelectorAll('.nav-btn');
+      buttons.forEach(b => b.classList.remove('active'));
+
+      const target = document.getElementById(tabId);
+      if (target) {
+        target.classList.add('active');
+        target.style.display = 'block';
+      }
+
+      if (btn) btn.classList.add('active');
+      if (tabId === 'dashboard') renderCharts();
+    }
 
     const toBase64 = file => new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -370,6 +417,58 @@
       saveState();
     });
 
+    function deleteOrcamento(id) {
+      if (confirm('Deseja remover este serviço/orçamento?')) {
+        state.orcamentos = state.orcamentos.filter(item => item.id !== id);
+        saveState();
+      }
+    }
+
+    function deleteProjeto(id) {
+      if (confirm('Deseja remover este projeto?')) {
+        state.projetos = state.projetos.filter(item => item.id !== id);
+        saveState();
+      }
+    }
+
+    function deleteInspiracao(id) {
+      if (confirm('Deseja remover esta inspiração?')) {
+        state.inspiracoes = state.inspiracoes.filter(item => item.id !== id);
+        saveState();
+      }
+    }
+
+    function exportBackup() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `backup_obra_lebistro_${new Date().toISOString().slice(0,10)}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    }
+
+    function importBackup(e) {
+      const fileReader = new FileReader();
+      fileReader.onload = function(event) {
+        try {
+          const importedData = JSON.parse(event.target.result);
+          if (importedData.orcamentos || importedData.projetos || importedData.inspiracoes) {
+            state = importedData;
+            saveState();
+            alert('Dados importados com sucesso!');
+          } else {
+            alert('Arquivo JSON inválido.');
+          }
+        } catch (err) {
+          alert('Erro ao ler o arquivo de backup.');
+        }
+      };
+      if (e.target.files[0]) {
+        fileReader.readAsText(e.target.files[0]);
+      }
+    }
+
     function updateUI() {
       const tbodyOrc = document.getElementById('table-orcamentos');
       tbodyOrc.innerHTML = state.orcamentos.map(item => `
@@ -380,6 +479,7 @@
           <td>R$ ${item.valor.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</td>
           <td><span class="badge badge-${item.status.replace(/\s+/g, '')}">${item.status}</span></td>
           <td>${item.anexo ? `<a href="${item.anexo}" download="orcamento_${item.servico}">Baixar</a>` : 'Sem anexo'}</td>
+          <td><button class="btn-delete" onclick="deleteOrcamento(${item.id})">Excluir</button></td>
         </tr>
       `).join('');
 
@@ -389,6 +489,7 @@
           ${p.tipo.includes('image') ? `<img src="${p.arquivo}">` : `<div style="padding:40px 20px;text-align:center;background:#f5f4ef;">📄 Documento PDF</div>`}
           <p>${p.nome}</p>
           <a href="${p.arquivo}" download="${p.nome}">Baixar Arquivo</a>
+          <button class="btn-delete" style="width:100%; border-radius:0;" onclick="deleteProjeto(${p.id})">Excluir Projeto</button>
         </div>
       `).join('');
 
@@ -397,6 +498,7 @@
         <div class="gallery-item">
           <img src="${i.arquivo}">
           <p>${i.desc}</p>
+          <button class="btn-delete" style="width:100%; border-radius:0;" onclick="deleteInspiracao(${i.id})">Excluir Inspiração</button>
         </div>
       `).join('');
 
@@ -462,36 +564,45 @@
     let chartStatusInstance = null;
 
     function renderCharts() {
-      const ctxStatus = document.getElementById('chartStatus').getContext('2d');
+      try {
+        if (typeof Chart === 'undefined') return;
 
-      const statusCounts = state.orcamentos.reduce((acc, curr) => {
-        acc[curr.status] = (acc[curr.status] || 0) + 1;
-        return acc;
-      }, {});
+        const canvas = document.getElementById('chartStatus');
+        if (!canvas) return;
 
-      if (chartStatusInstance) chartStatusInstance.destroy();
-      chartStatusInstance = new Chart(ctxStatus, {
-        type: 'doughnut',
-        data: {
-          labels: Object.keys(statusCounts),
-          datasets: [{
-            data: Object.values(statusCounts),
-            backgroundColor: ['#F2C4C4', '#A8BC9A', '#E2E8F0', '#5A7D4A']
-          }]
-        },
-        options: {
-          plugins: {
-            title: {
-              display: true,
-              text: 'Progresso Físico das Etapas',
-              color: '#0E0E0E',
-              font: { size: 15, weight: 'bold' }
+        const ctxStatus = canvas.getContext('2d');
+        const statusCounts = state.orcamentos.reduce((acc, curr) => {
+          acc[curr.status] = (acc[curr.status] || 0) + 1;
+          return acc;
+        }, {});
+
+        if (chartStatusInstance) chartStatusInstance.destroy();
+        chartStatusInstance = new Chart(ctxStatus, {
+          type: 'doughnut',
+          data: {
+            labels: Object.keys(statusCounts),
+            datasets: [{
+              data: Object.values(statusCounts),
+              backgroundColor: ['#F2C4C4', '#A8BC9A', '#E2E8F0', '#5A7D4A']
+            }]
+          },
+          options: {
+            plugins: {
+              title: {
+                display: true,
+                text: 'Progresso Físico das Etapas',
+                color: '#0E0E0E',
+                font: { size: 15, weight: 'bold' }
+              }
             }
           }
-        }
-      });
+        });
+      } catch (e) {
+        console.warn('Chart.js não pôde ser inicializado:', e);
+      }
     }
 
+    // Inicialização
     updateUI();
   </script>
 </body>
