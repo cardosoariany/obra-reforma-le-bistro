@@ -104,7 +104,6 @@
     .badge-Em.Cotação { background: var(--pink-accent); color: var(--black); }
     .badge-Em.Execução { background: #E2E8F0; color: var(--black); }
 
-    /* Estilos do Painel de Cronograma */
     .pending-box {
       background: #FFF5F5;
       border: 1px solid var(--pink-accent);
@@ -176,7 +175,6 @@
       </div>
     </div>
 
-    <!-- Caixa de Alerta de Aprovações Pendentes -->
     <div class="pending-box">
       <h3>⚠️ Pendente de Aprovação / Definição</h3>
       <div id="lista-pendencias">
@@ -298,10 +296,18 @@
     }
 
     function switchTab(evt, tabId) {
+      if (evt) evt.preventDefault();
+      
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('nav button').forEach(el => el.classList.remove('active'));
-      document.getElementById(tabId).classList.add('active');
-      evt.currentTarget.classList.add('active');
+      
+      const targetTab = document.getElementById(tabId);
+      if (targetTab) targetTab.classList.add('active');
+      
+      if (evt && evt.currentTarget) {
+        evt.currentTarget.classList.add('active');
+      }
+      
       if (tabId === 'dashboard') renderCharts();
     }
 
@@ -366,7 +372,6 @@
     });
 
     function updateUI() {
-      // Tabela de Orçamentos/Cronograma
       const tbodyOrc = document.getElementById('table-orcamentos');
       tbodyOrc.innerHTML = state.orcamentos.map(item => `
         <tr>
@@ -379,7 +384,6 @@
         </tr>
       `).join('');
 
-      // Galeria Projetos
       const galProj = document.getElementById('gallery-projetos');
       galProj.innerHTML = state.projetos.map(p => `
         <div class="gallery-item">
@@ -389,7 +393,6 @@
         </div>
       `).join('');
 
-      // Galeria Inspirações
       const galInsp = document.getElementById('gallery-inspiracoes');
       galInsp.innerHTML = state.inspiracoes.map(i => `
         <div class="gallery-item">
@@ -398,7 +401,6 @@
         </div>
       `).join('');
 
-      // Tabela Aprovados
       const tbodyAprov = document.getElementById('table-aprovados');
       const aprovados = state.orcamentos.filter(i => i.status === 'Aprovado' || i.status === 'Concluído');
       tbodyAprov.innerHTML = aprovados.map(item => `
@@ -408,93 +410,4 @@
           <td>${item.fornecedor}</td>
           <td>${item.dataEntrega ? new Date(item.dataEntrega + 'T00:00:00').toLocaleDateString('pt-BR') : '-'}</td>
           <td>R$ ${item.valor.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</td>
-          <td>${item.anexo ? `<a href="${item.anexo}" download="aprovado_${item.servico}">Baixar</a>` : 'Sem anexo'}</td>
-        </tr>
-      `).join('');
-
-      // Atualização dos KPIs de Cronograma
-      const pendentes = state.orcamentos.filter(i => i.status === 'Em Cotação');
-      const emExecucao = state.orcamentos.filter(i => i.status === 'Em Execução');
-      const concluidos = state.orcamentos.filter(i => i.status === 'Concluído');
-
-      document.getElementById('kpi-pendentes').innerText = pendentes.length;
-      document.getElementById('kpi-execucao').innerText = emExecucao.length;
-      document.getElementById('kpi-concluidos').innerText = concluidos.length;
-      document.getElementById('kpi-total-etapas').innerText = state.orcamentos.length;
-
-      // Renderizar Alerta de Pendências
-      const containerPendencias = document.getElementById('lista-pendencias');
-      if (pendentes.length === 0) {
-        containerPendencias.innerHTML = `<p style="font-size:0.9rem; color:#5A7D4A; font-weight:600;">✅ Tudo em dia! Nenhum orçamento pendente de aprovação.</p>`;
-      } else {
-        containerPendencias.innerHTML = pendentes.map(p => `
-          <div class="activity-card pending">
-            <div>
-              <strong>${p.servico}</strong> <span style="font-size:0.85rem; color:#666;">(${p.fornecedor})</span>
-              <div style="font-size:0.8rem; color:#555; margin-top:3px;">Previsão: ${p.dataEntrega ? new Date(p.dataEntrega + 'T00:00:00').toLocaleDateString('pt-BR') : 'Sem data definida'} | Valor: R$ ${p.valor.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</div>
-            </div>
-            <span class="badge badge-EmCotação">Aguardando Aprovação</span>
-          </div>
-        `).join('');
-      }
-
-      // Renderizar Próximas Atividades ordenadas por data
-      const containerProximas = document.getElementById('lista-proximas-atividades');
-      const proximas = state.orcamentos
-        .filter(i => i.status !== 'Concluído')
-        .sort((a, b) => new Date(a.dataEntrega || '9999-12-31') - new Date(b.dataEntrega || '9999-12-31'));
-
-      if (proximas.length === 0) {
-        containerProximas.innerHTML = `<p style="font-size:0.9rem; color:#666;">Nenhuma atividade cadastrada ou pendente.</p>`;
-      } else {
-        containerProximas.innerHTML = proximas.slice(0, 5).map(a => `
-          <div class="activity-card">
-            <div>
-              <strong>${a.servico}</strong>
-              <div style="font-size:0.8rem; color:#555; margin-top:3px;">Responsável: ${a.fornecedor} | Entrega: <strong>${a.dataEntrega ? new Date(a.dataEntrega + 'T00:00:00').toLocaleDateString('pt-BR') : 'Sem data'}</strong></div>
-            </div>
-            <span class="badge badge-${a.status.replace(/\s+/g, '')}">${a.status}</span>
-          </div>
-        `).join('');
-      }
-
-      renderCharts();
-    }
-
-    let chartStatusInstance = null;
-
-    function renderCharts() {
-      const ctxStatus = document.getElementById('chartStatus').getContext('2d');
-
-      const statusCounts = state.orcamentos.reduce((acc, curr) => {
-        acc[curr.status] = (acc[curr.status] || 0) + 1;
-        return acc;
-      }, {});
-
-      if (chartStatusInstance) chartStatusInstance.destroy();
-      chartStatusInstance = new Chart(ctxStatus, {
-        type: 'doughnut',
-        data: {
-          labels: Object.keys(statusCounts),
-          datasets: [{
-            data: Object.values(statusCounts),
-            backgroundColor: ['#F2C4C4', '#A8BC9A', '#E2E8F0', '#5A7D4A']
-          }]
-        },
-        options: {
-          plugins: {
-            title: {
-              display: true,
-              text: 'Progresso Físico das Etapas',
-              color: '#0E0E0E',
-              font: { size: 15, weight: 'bold' }
-            }
-          }
-        }
-      });
-    }
-
-    updateUI();
-  </script>
-</body>
-</html>
+          <td>${item.anexo ? `<a href="${item.anexo}" download="aprovado
