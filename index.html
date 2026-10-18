@@ -12,15 +12,13 @@
       --black: #0E0E0E;
       --off-white: #F5F4EF;
       --pink-accent: #F2C4C4;
-      
       --bg: #F5F4EF;
       --card: #FFFFFF;
-      --text: #0E0E0E;
       --border: #D8D6CE;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    body { background-color: var(--bg); color: var(--text); padding: 20px; }
+    body { background-color: var(--bg); color: var(--black); padding: 20px; }
 
     header {
       background: var(--black);
@@ -32,13 +30,12 @@
       justify-content: space-between;
       align-items: center;
       border-left: 8px solid var(--green-primary);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
       flex-wrap: wrap;
       gap: 12px;
     }
 
-    header h1 { font-size: 1.8rem; letter-spacing: 1px; color: var(--off-white); }
-    header p { color: var(--green-light); font-size: 0.95rem; margin-top: 4px; }
+    header h1 { font-size: 1.8rem; color: var(--off-white); }
+    header p { color: var(--green-light); font-size: 0.95rem; }
 
     .header-actions { display: flex; gap: 8px; }
     .btn-action {
@@ -47,11 +44,9 @@
       border: none;
       padding: 8px 14px;
       border-radius: 6px;
-      font-size: 0.85rem;
       font-weight: bold;
       cursor: pointer;
     }
-    .btn-action:hover { background: var(--pink-accent); }
 
     nav { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
     nav button {
@@ -62,21 +57,18 @@
       cursor: pointer;
       border-radius: 8px;
       font-weight: 600;
-      transition: all 0.2s ease;
     }
-    nav button:hover { background: var(--pink-accent); border-color: var(--pink-accent); }
     nav button.active { background: var(--green-primary); color: var(--off-white); border-color: var(--green-primary); }
 
-    .tab-content { display: none; background: var(--card); padding: 24px; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
+    .tab-content { display: none; background: var(--card); padding: 24px; border-radius: 12px; border: 1px solid var(--border); }
     .tab-content.active { display: block !important; }
-    .tab-content h2 { margin-bottom: 16px; color: var(--black); font-size: 1.4rem; border-bottom: 2px solid var(--green-light); padding-bottom: 8px; }
+    .tab-content h2 { margin-bottom: 16px; color: var(--black); border-bottom: 2px solid var(--green-light); padding-bottom: 8px; }
 
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
     @media (max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } }
 
     form { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
-    input, select, textarea { padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--off-white); color: var(--black); outline: none; }
-    input:focus, select:focus { border-color: var(--green-primary); background: #ffffff; }
+    input, select { padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--off-white); outline: none; }
     
     button.btn-submit {
       background: var(--green-primary);
@@ -86,79 +78,31 @@
       border-radius: 8px;
       font-weight: bold;
       cursor: pointer;
-      font-size: 1rem;
-      transition: background 0.2s;
     }
-    button.btn-submit:hover { background: #48653b; }
 
     table { width: 100%; border-collapse: collapse; margin-top: 10px; }
     th, td { border: 1px solid var(--border); padding: 12px; text-align: left; }
-    th { background: var(--off-white); color: var(--black); font-weight: 700; }
-    tr:nth-child(even) { background-color: #FAFAFA; }
+    th { background: var(--off-white); font-weight: 700; }
 
     .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 18px; margin-top: 15px; }
-    .gallery-item { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.04); position: relative; }
+    .gallery-item { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: #fff; }
     .gallery-item img { width: 100%; height: 150px; object-fit: cover; }
-    .gallery-item p { padding: 10px; font-size: 0.88rem; text-align: center; font-weight: 500; }
-    .gallery-item a { display: block; text-align: center; padding: 8px; background: var(--off-white); color: var(--green-primary); text-decoration: none; font-weight: bold; border-top: 1px solid var(--border); }
-    .gallery-item a:hover { background: var(--pink-accent); color: var(--black); }
+    .gallery-item p { padding: 10px; font-size: 0.88rem; text-align: center; }
 
     .kpi-container { display: flex; gap: 15px; margin-bottom: 24px; flex-wrap: wrap; }
     .kpi-card { flex: 1; min-width: 180px; background: var(--off-white); padding: 18px; border-radius: 10px; text-align: center; border: 1px solid var(--border); }
-    .kpi-card p { font-size: 0.85rem; color: #555; text-transform: uppercase; font-weight: 600; }
     .kpi-card h3 { font-size: 1.6rem; color: var(--green-primary); margin-top: 6px; }
 
-    .badge {
-      display: inline-block;
-      padding: 4px 10px;
-      border-radius: 12px;
-      font-size: 0.8rem;
-      font-weight: bold;
-    }
-    .badge-Aprovado, .badge-Concluído { background: var(--green-light); color: var(--black); }
-    .badge-Em.Cotação { background: var(--pink-accent); color: var(--black); }
-    .badge-Em.Execução { background: #E2E8F0; color: var(--black); }
+    .badge { padding: 4px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: bold; }
+    .badge-Aprovado, .badge-Concluído { background: var(--green-light); }
+    .badge-EmCotação { background: var(--pink-accent); }
+    .badge-EmExecução { background: #E2E8F0; }
 
-    .pending-box {
-      background: #FFF5F5;
-      border: 1px solid var(--pink-accent);
-      border-radius: 8px;
-      padding: 16px;
-      margin-bottom: 20px;
-    }
-    .pending-box h3 {
-      font-size: 1.1rem;
-      color: #B91C1C;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .activity-card {
-      background: var(--off-white);
-      border: 1px solid var(--border);
-      border-left: 5px solid var(--green-primary);
-      border-radius: 6px;
-      padding: 12px 16px;
-      margin-bottom: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .activity-card.pending {
-      border-left-color: var(--pink-accent);
-    }
+    .pending-box { background: #FFF5F5; border: 1px solid var(--pink-accent); border-radius: 8px; padding: 16px; margin-bottom: 20px; }
+    .activity-card { background: var(--off-white); border: 1px solid var(--border); border-left: 5px solid var(--green-primary); border-radius: 6px; padding: 12px 16px; margin-bottom: 10px; display: flex; justify-content: space-between; }
+    .activity-card.pending { border-left-color: var(--pink-accent); }
 
-    .btn-delete {
-      background: #EF4444;
-      color: white;
-      border: none;
-      padding: 4px 8px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 0.75rem;
-      margin-left: 8px;
-    }
+    .btn-delete { background: #EF4444; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 0.75rem; }
   </style>
 </head>
 <body>
@@ -176,49 +120,32 @@
   </header>
 
   <nav>
-    <button class="nav-btn active" onclick="openTab('dashboard', this)">⏱️ Cronograma & Pendências</button>
-    <button class="nav-btn" onclick="openTab('orcamentos', this)">💰 Serviços & Orçamentos</button>
-    <button class="nav-btn" onclick="openTab('projetos', this)">📐 Projetos & Plantas</button>
-    <button class="nav-btn" onclick="openTab('inspiracoes', this)">💡 Inspirações</button>
-    <button class="nav-btn" onclick="openTab('aprovados', this)">✅ Aprovados</button>
+    <button class="tab-btn active" id="btn-dashboard" onclick="switchTab('dashboard')">⏱️ Cronograma & Pendências</button>
+    <button class="tab-btn" id="btn-orcamentos" onclick="switchTab('orcamentos')">💰 Serviços & Orçamentos</button>
+    <button class="tab-btn" id="btn-projetos" onclick="switchTab('projetos')">📐 Projetos & Plantas</button>
+    <button class="tab-btn" id="btn-inspiracoes" onclick="switchTab('inspiracoes')">💡 Inspirações</button>
+    <button class="tab-btn" id="btn-aprovados" onclick="switchTab('aprovados')">✅ Aprovados</button>
   </nav>
 
   <!-- TAB: DASHBOARD -->
   <div id="dashboard" class="tab-content active">
     <h2>Visão Geral do Cronograma</h2>
-    
     <div class="kpi-container">
-      <div class="kpi-card">
-        <p>Pendentes de Aprovação</p>
-        <h3 id="kpi-pendentes" style="color: #B91C1C;">0</h3>
-      </div>
-      <div class="kpi-card">
-        <p>Em Execução</p>
-        <h3 id="kpi-execucao">0</h3>
-      </div>
-      <div class="kpi-card">
-        <p>Serviços Concluídos</p>
-        <h3 id="kpi-concluidos">0</h3>
-      </div>
-      <div class="kpi-card">
-        <p>Total de Etapas</p>
-        <h3 id="kpi-total-etapas">0</h3>
-      </div>
+      <div class="kpi-card"><p>Pendentes</p><h3 id="kpi-pendentes" style="color: #B91C1C;">0</h3></div>
+      <div class="kpi-card"><p>Em Execução</p><h3 id="kpi-execucao">0</h3></div>
+      <div class="kpi-card"><p>Concluídos</p><h3 id="kpi-concluidos">0</h3></div>
+      <div class="kpi-card"><p>Total Etapas</p><h3 id="kpi-total-etapas">0</h3></div>
     </div>
 
     <div class="pending-box">
-      <h3>⚠️ Pendente de Aprovação / Definição</h3>
-      <div id="lista-pendencias">
-        <p style="font-size:0.9rem; color:#666;">Nenhuma pendência crítica cadastrada.</p>
-      </div>
+      <h3 style="color:#B91C1C; margin-bottom:10px;">⚠️ Pendente de Aprovação</h3>
+      <div id="lista-pendencias"><p style="font-size:0.9rem; color:#666;">Nenhuma pendência crítica.</p></div>
     </div>
 
     <div class="grid-2">
       <div>
-        <h3 style="margin-bottom: 12px; font-size: 1.1rem; color: var(--black);">📅 Próximas Atividades / Em Andamento</h3>
-        <div id="lista-proximas-atividades">
-          <p style="font-size:0.9rem; color:#666;">Nenhum serviço cadastrado ainda.</p>
-        </div>
+        <h3 style="margin-bottom: 12px;">📅 Próximas Atividades</h3>
+        <div id="lista-proximas-atividades"><p style="font-size:0.9rem; color:#666;">Nenhum serviço cadastrado.</p></div>
       </div>
       <div>
         <canvas id="chartStatus"></canvas>
@@ -231,41 +158,29 @@
     <h2>Serviços, Prazos e Orçamentos</h2>
     <form id="form-orcamento">
       <div class="grid-2">
-        <input type="text" id="orc-servico" placeholder="Nome do Serviço / Etapa (ex: Marcenaria Salão)" required>
+        <input type="text" id="orc-servico" placeholder="Serviço / Etapa" required>
         <input type="text" id="orc-fornecedor" placeholder="Fornecedor / Responsável" required>
       </div>
       <div class="grid-2">
-        <input type="number" id="orc-valor" placeholder="Valor Orçado (R$)" step="0.01" required>
+        <input type="number" id="orc-valor" placeholder="Valor (R$)" step="0.01" required>
         <select id="orc-status">
           <option value="Em Cotação">Em Cotação (Pendente)</option>
-          <option value="Aprovado">Aprovado (Aguardando Início)</option>
+          <option value="Aprovado">Aprovado</option>
           <option value="Em Execução">Em Execução</option>
           <option value="Concluído">Concluído</option>
         </select>
       </div>
       <div class="grid-2">
-        <div>
-          <label style="font-size:0.85rem; font-weight:600; display:block; margin-bottom:4px;">Previsão de Término / Entrega:</label>
-          <input type="date" id="orc-data" required style="width:100%;">
-        </div>
-        <div>
-          <label style="font-size:0.85rem; font-weight:600; display:block; margin-bottom:4px;">Anexar Proposta / Orçamento (PDF ou Imagem):</label>
-          <input type="file" id="orc-file" accept="image/*,.pdf">
-        </div>
+        <input type="date" id="orc-data" required>
+        <input type="file" id="orc-file" accept="image/*,.pdf">
       </div>
-      <button type="submit" class="btn-submit">Cadastrar Serviço no Cronograma</button>
+      <button type="submit" class="btn-submit">Cadastrar Serviço</button>
     </form>
 
     <table>
       <thead>
         <tr>
-          <th>Serviço / Etapa</th>
-          <th>Responsável</th>
-          <th>Previsão Entrega</th>
-          <th>Valor</th>
-          <th>Status</th>
-          <th>Anexo</th>
-          <th>Ações</th>
+          <th>Serviço</th><th>Responsável</th><th>Entrega</th><th>Valor</th><th>Status</th><th>Anexo</th><th>Ação</th>
         </tr>
       </thead>
       <tbody id="table-orcamentos"></tbody>
@@ -276,7 +191,7 @@
   <div id="projetos" class="tab-content">
     <h2>Documentos e Projetos Técnicos</h2>
     <form id="form-projeto">
-      <input type="text" id="proj-nome" placeholder="Nome do Projeto (ex: Layout Arquitetônico, Elétrico Bar)" required>
+      <input type="text" id="proj-nome" placeholder="Nome do Projeto" required>
       <input type="file" id="proj-file" accept="image/*,.pdf" required>
       <button type="submit" class="btn-submit">Anexar Projeto</button>
     </form>
@@ -287,7 +202,7 @@
   <div id="inspiracoes" class="tab-content">
     <h2>Painel de Inspirações (Moodboard)</h2>
     <form id="form-inspiracao">
-      <input type="text" id="insp-desc" placeholder="Descrição / Ambiente (ex: Iluminação e Vegetação)" required>
+      <input type="text" id="insp-desc" placeholder="Descrição / Ambiente" required>
       <input type="file" id="insp-file" accept="image/*" required>
       <button type="submit" class="btn-submit">Adicionar Inspiração</button>
     </form>
@@ -297,77 +212,74 @@
   <!-- TAB: APROVADOS -->
   <div id="aprovados" class="tab-content">
     <h2>Central de Aprovados</h2>
-    <p style="margin-bottom: 15px; color: #666;">Lista consolidada de orçamentos e serviços marcados como <strong>Aprovado</strong> ou <strong>Concluído</strong>.</p>
     <table>
       <thead>
-        <tr>
-          <th>Tipo</th>
-          <th>Descrição / Serviço</th>
-          <th>Fornecedor</th>
-          <th>Data Previsão</th>
-          <th>Valor</th>
-          <th>Arquivo</th>
-        </tr>
+        <tr><th>Tipo</th><th>Descrição</th><th>Fornecedor</th><th>Entrega</th><th>Valor</th><th>Arquivo</th></tr>
       </thead>
       <tbody id="table-aprovados"></tbody>
     </table>
   </div>
 
   <script>
-    let state = { orcamentos: [], projetos: [], inspiracoes: [] };
+    var state = { orcamentos: [], projetos: [], inspiracoes: [] };
 
-    // Leitura segura do localStorage
     try {
       state.orcamentos = JSON.parse(localStorage.getItem('lebistro_orcamentos')) || [];
       state.projetos = JSON.parse(localStorage.getItem('lebistro_projetos')) || [];
       state.inspiracoes = JSON.parse(localStorage.getItem('lebistro_inspiracoes')) || [];
-    } catch (e) {
-      console.warn("Aviso: localStorage indisponível ou em modo privado.");
-    }
+    } catch(e) {}
 
     function saveState() {
       try {
         localStorage.setItem('lebistro_orcamentos', JSON.stringify(state.orcamentos));
         localStorage.setItem('lebistro_projetos', JSON.stringify(state.projetos));
         localStorage.setItem('lebistro_inspiracoes', JSON.stringify(state.inspiracoes));
-      } catch (e) {
-        console.warn("Aviso: Não foi possível salvar no localStorage.");
-      }
+      } catch(e) {}
       updateUI();
     }
 
-    // Função global de navegação direta
-    function openTab(tabId, btn) {
-      const contents = document.querySelectorAll('.tab-content');
-      contents.forEach(content => {
-        content.classList.remove('active');
-        content.style.display = 'none';
-      });
-
-      const buttons = document.querySelectorAll('.nav-btn');
-      buttons.forEach(b => b.classList.remove('active'));
-
-      const target = document.getElementById(tabId);
-      if (target) {
-        target.classList.add('active');
-        target.style.display = 'block';
+    // Função de Troca de Abas Simplificada e Infalível
+    function switchTab(tabId) {
+      var tabs = document.querySelectorAll('.tab-content');
+      for (var i = 0; i < tabs.length; i++) {
+        tabs[i].classList.remove('active');
+        tabs[i].style.display = 'none';
       }
 
-      if (btn) btn.classList.add('active');
-      if (tabId === 'dashboard') renderCharts();
+      var btns = document.querySelectorAll('.tab-btn');
+      for (var j = 0; j < btns.length; j++) {
+        btns[j].classList.remove('active');
+      }
+
+      var activeTab = document.getElementById(tabId);
+      if (activeTab) {
+        activeTab.classList.add('active');
+        activeTab.style.display = 'block';
+      }
+
+      var activeBtn = document.getElementById('btn-' + tabId);
+      if (activeBtn) {
+        activeBtn.classList.add('active');
+      }
+
+      if (tabId === 'dashboard') {
+        renderCharts();
+      }
     }
 
-    const toBase64 = file => new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = error => reject(error);
-    });
+    var toBase64 = function(file) {
+      return new Promise(function(resolve, reject) {
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function() { resolve(reader.result); };
+        reader.onerror = function(error) { reject(error); };
+      });
+    };
 
-    document.getElementById('form-orcamento').addEventListener('submit', async (e) => {
+    document.getElementById('form-orcamento').addEventListener('submit', async function(e) {
       e.preventDefault();
-      const fileInput = document.getElementById('orc-file');
-      let fileData = null;
+      var fileInput = document.getElementById('orc-file');
+      var fileData = null;
       if (fileInput.files[0]) {
         fileData = await toBase64(fileInput.files[0]);
       }
@@ -386,10 +298,10 @@
       saveState();
     });
 
-    document.getElementById('form-projeto').addEventListener('submit', async (e) => {
+    document.getElementById('form-projeto').addEventListener('submit', async function(e) {
       e.preventDefault();
-      const file = document.getElementById('proj-file').files[0];
-      const fileData = await toBase64(file);
+      var file = document.getElementById('proj-file').files[0];
+      var fileData = await toBase64(file);
 
       state.projetos.push({
         id: Date.now(),
@@ -402,10 +314,10 @@
       saveState();
     });
 
-    document.getElementById('form-inspiracao').addEventListener('submit', async (e) => {
+    document.getElementById('form-inspiracao').addEventListener('submit', async function(e) {
       e.preventDefault();
-      const file = document.getElementById('insp-file').files[0];
-      const fileData = await toBase64(file);
+      var file = document.getElementById('insp-file').files[0];
+      var fileData = await toBase64(file);
 
       state.inspiracoes.push({
         id: Date.now(),
@@ -418,188 +330,117 @@
     });
 
     function deleteOrcamento(id) {
-      if (confirm('Deseja remover este serviço/orçamento?')) {
-        state.orcamentos = state.orcamentos.filter(item => item.id !== id);
-        saveState();
-      }
-    }
-
-    function deleteProjeto(id) {
-      if (confirm('Deseja remover este projeto?')) {
-        state.projetos = state.projetos.filter(item => item.id !== id);
-        saveState();
-      }
-    }
-
-    function deleteInspiracao(id) {
-      if (confirm('Deseja remover esta inspiração?')) {
-        state.inspiracoes = state.inspiracoes.filter(item => item.id !== id);
+      if (confirm('Remover este item?')) {
+        state.orcamentos = state.orcamentos.filter(function(i) { return i.id !== id; });
         saveState();
       }
     }
 
     function exportBackup() {
-      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state));
-      const downloadAnchor = document.createElement('a');
-      downloadAnchor.setAttribute("href", dataStr);
-      downloadAnchor.setAttribute("download", `backup_obra_lebistro_${new Date().toISOString().slice(0,10)}.json`);
-      document.body.appendChild(downloadAnchor);
-      downloadAnchor.click();
-      downloadAnchor.remove();
+      var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state));
+      var a = document.createElement('a');
+      a.href = dataStr;
+      a.download = "backup_lebistro.json";
+      a.click();
     }
 
     function importBackup(e) {
-      const fileReader = new FileReader();
-      fileReader.onload = function(event) {
+      var reader = new FileReader();
+      reader.onload = function(event) {
         try {
-          const importedData = JSON.parse(event.target.result);
-          if (importedData.orcamentos || importedData.projetos || importedData.inspiracoes) {
-            state = importedData;
-            saveState();
-            alert('Dados importados com sucesso!');
-          } else {
-            alert('Arquivo JSON inválido.');
-          }
-        } catch (err) {
-          alert('Erro ao ler o arquivo de backup.');
-        }
+          state = JSON.parse(event.target.result);
+          saveState();
+          alert('Dados carregados!');
+        } catch(err) { alert('Arquivo inválido.'); }
       };
-      if (e.target.files[0]) {
-        fileReader.readAsText(e.target.files[0]);
-      }
+      if (e.target.files[0]) reader.readAsText(e.target.files[0]);
     }
 
     function updateUI() {
-      const tbodyOrc = document.getElementById('table-orcamentos');
-      tbodyOrc.innerHTML = state.orcamentos.map(item => `
-        <tr>
-          <td>${item.servico}</td>
-          <td>${item.fornecedor}</td>
-          <td>${item.dataEntrega ? new Date(item.dataEntrega + 'T00:00:00').toLocaleDateString('pt-BR') : 'Não definida'}</td>
-          <td>R$ ${item.valor.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</td>
-          <td><span class="badge badge-${item.status.replace(/\s+/g, '')}">${item.status}</span></td>
-          <td>${item.anexo ? `<a href="${item.anexo}" download="orcamento_${item.servico}">Baixar</a>` : 'Sem anexo'}</td>
-          <td><button class="btn-delete" onclick="deleteOrcamento(${item.id})">Excluir</button></td>
-        </tr>
-      `).join('');
+      var tbodyOrc = document.getElementById('table-orcamentos');
+      tbodyOrc.innerHTML = state.orcamentos.map(function(item) {
+        return '<tr>' +
+          '<td>' + item.servico + '</td>' +
+          '<td>' + item.fornecedor + '</td>' +
+          '<td>' + (item.dataEntrega ? new Date(item.dataEntrega + 'T00:00:00').toLocaleDateString('pt-BR') : '-') + '</td>' +
+          '<td>R$ ' + item.valor.toLocaleString('pt-BR', {minimumFractionDigits: 2}) + '</td>' +
+          '<td><span class="badge badge-' + item.status.replace(/\s+/g, '') + '">' + item.status + '</span></td>' +
+          '<td>' + (item.anexo ? '<a href="' + item.anexo + '" download>Baixar</a>' : '-') + '</td>' +
+          '<td><button class="btn-delete" onclick="deleteOrcamento(' + item.id + ')">X</button></td>' +
+        '</tr>';
+      }).join('');
 
-      const galProj = document.getElementById('gallery-projetos');
-      galProj.innerHTML = state.projetos.map(p => `
-        <div class="gallery-item">
-          ${p.tipo.includes('image') ? `<img src="${p.arquivo}">` : `<div style="padding:40px 20px;text-align:center;background:#f5f4ef;">📄 Documento PDF</div>`}
-          <p>${p.nome}</p>
-          <a href="${p.arquivo}" download="${p.nome}">Baixar Arquivo</a>
-          <button class="btn-delete" style="width:100%; border-radius:0;" onclick="deleteProjeto(${p.id})">Excluir Projeto</button>
-        </div>
-      `).join('');
+      var galProj = document.getElementById('gallery-projetos');
+      galProj.innerHTML = state.projetos.map(function(p) {
+        return '<div class="gallery-item">' +
+          (p.tipo.includes('image') ? '<img src="' + p.arquivo + '">' : '<div style="padding:30px;text-align:center">📄 PDF</div>') +
+          '<p>' + p.nome + '</p>' +
+          '<a href="' + p.arquivo + '" download="' + p.nome + '" style="display:block;text-align:center;padding:5px;">Baixar</a>' +
+        '</div>';
+      }).join('');
 
-      const galInsp = document.getElementById('gallery-inspiracoes');
-      galInsp.innerHTML = state.inspiracoes.map(i => `
-        <div class="gallery-item">
-          <img src="${i.arquivo}">
-          <p>${i.desc}</p>
-          <button class="btn-delete" style="width:100%; border-radius:0;" onclick="deleteInspiracao(${i.id})">Excluir Inspiração</button>
-        </div>
-      `).join('');
+      var galInsp = document.getElementById('gallery-inspiracoes');
+      galInsp.innerHTML = state.inspiracoes.map(function(i) {
+        return '<div class="gallery-item"><img src="' + i.arquivo + '"><p>' + i.desc + '</p></div>';
+      }).join('');
 
-      const tbodyAprov = document.getElementById('table-aprovados');
-      const aprovados = state.orcamentos.filter(i => i.status === 'Aprovado' || i.status === 'Concluído');
-      tbodyAprov.innerHTML = aprovados.map(item => `
-        <tr>
-          <td>Orçamento/Serviço</td>
-          <td>${item.servico}</td>
-          <td>${item.fornecedor}</td>
-          <td>${item.dataEntrega ? new Date(item.dataEntrega + 'T00:00:00').toLocaleDateString('pt-BR') : '-'}</td>
-          <td>R$ ${item.valor.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</td>
-          <td>${item.anexo ? `<a href="${item.anexo}" download="aprovado_${item.servico}">Baixar</a>` : 'Sem anexo'}</td>
-        </tr>
-      `).join('');
+      var tbodyAprov = document.getElementById('table-aprovados');
+      var aprovados = state.orcamentos.filter(function(i) { return i.status === 'Aprovado' || i.status === 'Concluído'; });
+      tbodyAprov.innerHTML = aprovados.map(function(item) {
+        return '<tr><td>Serviço</td><td>' + item.servico + '</td><td>' + item.fornecedor + '</td><td>' + (item.dataEntrega || '-') + '</td><td>R$ ' + item.valor.toLocaleString('pt-BR', {minimumFractionDigits: 2}) + '</td><td>' + (item.anexo ? '<a href="' + item.anexo + '" download>Baixar</a>' : '-') + '</td></tr>';
+      }).join('');
 
-      const pendentes = state.orcamentos.filter(i => i.status === 'Em Cotação');
-      const emExecucao = state.orcamentos.filter(i => i.status === 'Em Execução');
-      const concluidos = state.orcamentos.filter(i => i.status === 'Concluído');
-
+      var pendentes = state.orcamentos.filter(function(i) { return i.status === 'Em Cotação'; });
       document.getElementById('kpi-pendentes').innerText = pendentes.length;
-      document.getElementById('kpi-execucao').innerText = emExecucao.length;
-      document.getElementById('kpi-concluidos').innerText = concluidos.length;
+      document.getElementById('kpi-execucao').innerText = state.orcamentos.filter(function(i) { return i.status === 'Em Execução'; }).length;
+      document.getElementById('kpi-concluidos').innerText = state.orcamentos.filter(function(i) { return i.status === 'Concluído'; }).length;
       document.getElementById('kpi-total-etapas').innerText = state.orcamentos.length;
 
-      const containerPendencias = document.getElementById('lista-pendencias');
+      var containerPendencias = document.getElementById('lista-pendencias');
       if (pendentes.length === 0) {
-        containerPendencias.innerHTML = `<p style="font-size:0.9rem; color:#5A7D4A; font-weight:600;">✅ Tudo em dia! Nenhum orçamento pendente de aprovação.</p>`;
+        containerPendencias.innerHTML = '<p style="font-size:0.9rem; color:#5A7D4A;">✅ Nenhuma pendência de aprovação.</p>';
       } else {
-        containerPendencias.innerHTML = pendentes.map(p => `
-          <div class="activity-card pending">
-            <div>
-              <strong>${p.servico}</strong> <span style="font-size:0.85rem; color:#666;">(${p.fornecedor})</span>
-              <div style="font-size:0.8rem; color:#555; margin-top:3px;">Previsão: ${p.dataEntrega ? new Date(p.dataEntrega + 'T00:00:00').toLocaleDateString('pt-BR') : 'Sem data definida'} | Valor: R$ ${p.valor.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</div>
-            </div>
-            <span class="badge badge-EmCotação">Aguardando Aprovação</span>
-          </div>
-        `).join('');
+        containerPendencias.innerHTML = pendentes.map(function(p) {
+          return '<div class="activity-card pending"><div><strong>' + p.servico + '</strong> (' + p.fornecedor + ')</div><span class="badge badge-EmCotação">Pendente</span></div>';
+        }).join('');
       }
 
-      const containerProximas = document.getElementById('lista-proximas-atividades');
-      const proximas = state.orcamentos
-        .filter(i => i.status !== 'Concluído')
-        .sort((a, b) => new Date(a.dataEntrega || '9999-12-31') - new Date(b.dataEntrega || '9999-12-31'));
-
+      var containerProximas = document.getElementById('lista-proximas-atividades');
+      var proximas = state.orcamentos.filter(function(i) { return i.status !== 'Concluído'; });
       if (proximas.length === 0) {
-        containerProximas.innerHTML = `<p style="font-size:0.9rem; color:#666;">Nenhuma atividade cadastrada ou pendente.</p>`;
+        containerProximas.innerHTML = '<p style="font-size:0.9rem; color:#666;">Nenhum serviço em andamento.</p>';
       } else {
-        containerProximas.innerHTML = proximas.slice(0, 5).map(a => `
-          <div class="activity-card">
-            <div>
-              <strong>${a.servico}</strong>
-              <div style="font-size:0.8rem; color:#555; margin-top:3px;">Responsável: ${a.fornecedor} | Entrega: <strong>${a.dataEntrega ? new Date(a.dataEntrega + 'T00:00:00').toLocaleDateString('pt-BR') : 'Sem data'}</strong></div>
-            </div>
-            <span class="badge badge-${a.status.replace(/\s+/g, '')}">${a.status}</span>
-          </div>
-        `).join('');
+        containerProximas.innerHTML = proximas.slice(0, 5).map(function(a) {
+          return '<div class="activity-card"><div><strong>' + a.servico + '</strong></div><span class="badge badge-' + a.status.replace(/\s+/g, '') + '">' + a.status + '</span></div>';
+        }).join('');
       }
 
       renderCharts();
     }
 
-    let chartStatusInstance = null;
-
+    var chartStatusInstance = null;
     function renderCharts() {
       try {
         if (typeof Chart === 'undefined') return;
-
-        const canvas = document.getElementById('chartStatus');
+        var canvas = document.getElementById('chartStatus');
         if (!canvas) return;
 
-        const ctxStatus = canvas.getContext('2d');
-        const statusCounts = state.orcamentos.reduce((acc, curr) => {
+        var ctx = canvas.getContext('2d');
+        var counts = state.orcamentos.reduce(function(acc, curr) {
           acc[curr.status] = (acc[curr.status] || 0) + 1;
           return acc;
         }, {});
 
         if (chartStatusInstance) chartStatusInstance.destroy();
-        chartStatusInstance = new Chart(ctxStatus, {
+        chartStatusInstance = new Chart(ctx, {
           type: 'doughnut',
           data: {
-            labels: Object.keys(statusCounts),
-            datasets: [{
-              data: Object.values(statusCounts),
-              backgroundColor: ['#F2C4C4', '#A8BC9A', '#E2E8F0', '#5A7D4A']
-            }]
+            labels: Object.keys(counts),
+            datasets: [{ data: Object.values(counts), backgroundColor: ['#F2C4C4', '#A8BC9A', '#E2E8F0', '#5A7D4A'] }]
           },
-          options: {
-            plugins: {
-              title: {
-                display: true,
-                text: 'Progresso Físico das Etapas',
-                color: '#0E0E0E',
-                font: { size: 15, weight: 'bold' }
-              }
-            }
-          }
+          options: { plugins: { title: { display: true, text: 'Progresso Físico da Obra' } } }
         });
-      } catch (e) {
-        console.warn('Chart.js não pôde ser inicializado:', e);
-      }
+      } catch(e) {}
     }
 
     // Inicialização
